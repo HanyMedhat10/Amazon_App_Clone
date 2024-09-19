@@ -9,7 +9,13 @@ class AmazonApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: Scaffold());
+    return MaterialApp(
+      title: "Amazon App",
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const Scaffold(),
+    );
   }
 }
