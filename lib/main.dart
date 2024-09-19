@@ -1,4 +1,8 @@
+import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'router.dart';
 
 void main() {
   runApp(const AmazonApp());
@@ -13,9 +17,22 @@ class AmazonApp extends StatelessWidget {
       title: "Amazon App",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: GlobalVariables.backgroundColor,
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+        ),
+        colorScheme: const ColorScheme.light(
+          primary: GlobalVariables.secondaryColor,
+          surface: GlobalVariables.secondaryColor,
+          // onSurface: GlobalVariables.secondaryColor,/* Color of texts */
+          // onPrimary: GlobalVariables.secondaryColor,/* Color of texts in appear */
+        ),
       ),
-      home: const Scaffold(),
+      onGenerateRoute: (settings) => generateRouter(settings),
+      home: const AuthScreen(),
     );
   }
 }
