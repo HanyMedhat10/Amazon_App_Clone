@@ -1,7 +1,7 @@
+import 'package:amazon_clone/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone/constant/global_variable.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone/features/auth/services/auth_service.dart';
-import 'package:amazon_clone/features/home/screens/home_screen.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,7 @@ class _AmazonAppState extends State<AmazonApp> {
       ),
       onGenerateRoute: (settings) => generateRouter(settings),
       home:Provider.of<UserProvider>(context).user.token.isNotEmpty 
-      ? const HomeScreen() 
+      ? const BottomBar() 
       : const AuthScreen(),
     );
   }
