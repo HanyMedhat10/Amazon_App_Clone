@@ -30,6 +30,9 @@ class CustomTextfield extends StatelessWidget {
           filled: true,
           fillColor: Colors.white),
       validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $hintText';
+        }
         return null;
       },
     );
