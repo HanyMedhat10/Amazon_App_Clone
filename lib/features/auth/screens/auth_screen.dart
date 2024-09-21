@@ -136,11 +136,13 @@ class _AuthScreenState extends State<AuthScreen> {
                           hintText: 'Password',
                         ),
                         const SizedBox(height: 10),
-                        CustomButton(text: 'Sign In', onPressed: () {
-                          if (_signInFormKey.currentState!.validate()) {
-                            signInUser();
-                          }
-                        }),
+                        CustomButton(
+                            text: 'Sign In',
+                            onPressed: () {
+                              if (_signInFormKey.currentState!.validate()) {
+                                signInUser();
+                              }
+                            }),
                       ],
                     ),
                   ),
