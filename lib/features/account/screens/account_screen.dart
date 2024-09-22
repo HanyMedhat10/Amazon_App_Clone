@@ -1,4 +1,6 @@
 import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/account/widgets/below_app_bar.dart';
+import 'package:amazon_clone/features/account/widgets/top_buttons.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -27,16 +29,28 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: const Row(children: [
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.only(right: 15),
                     child: Icon(Icons.notifications_outlined),
                   ),
                   Icon(Icons.search),
-                ]))
+                ],
+              ),
+            ),
           ]),
         ),
+      ),
+      body: const Column(
+        children: [
+          BelowAppBar(),
+          SizedBox(height: 10),
+          TopButtons(),
+          SizedBox(height: 20),
+          // Orders(),
+        ],
       ),
     );
   }
