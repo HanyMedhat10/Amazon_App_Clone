@@ -8,6 +8,7 @@ class User {
   final String password;
   final String type;
   final String token;
+  final String address;
   User({
     required this.id,
     required this.name,
@@ -15,6 +16,7 @@ class User {
     required this.password,
     required this.type,
     required this.token,
+    required this.address,
   });
 
   User copyWith({
@@ -24,6 +26,7 @@ class User {
     String? password,
     String? type,
     String? token,
+    String? address,
   }) {
     return User(
       id: id ?? this.id,
@@ -32,6 +35,7 @@ class User {
       password: password ?? this.password,
       type: type ?? this.type,
       token: token ?? this.token,
+      address: address ?? this.address,
     );
   }
 
@@ -54,6 +58,7 @@ class User {
       password: map['password'] as String,
       type: map['type'] as String,
       token: map['token'] as String,
+      address: map['address'] as String,
     );
   }
 
@@ -70,23 +75,22 @@ class User {
   @override
   bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.email == email &&
-      other.password == password &&
-      other.type == type &&
-      other.token == token;
+
+    return other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.password == password &&
+        other.type == type &&
+        other.token == token;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      email.hashCode ^
-      password.hashCode ^
-      type.hashCode ^
-      token.hashCode;
+        name.hashCode ^
+        email.hashCode ^
+        password.hashCode ^
+        type.hashCode ^
+        token.hashCode;
   }
 }

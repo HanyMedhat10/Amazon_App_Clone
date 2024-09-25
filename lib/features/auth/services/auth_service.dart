@@ -30,7 +30,8 @@ class AuthService {
         email: email,
         password: password,
         type: type ?? '',
-        token: '',
+        token: '', 
+        address: '',
       );
 
       http.Response res = await http.post(
