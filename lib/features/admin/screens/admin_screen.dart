@@ -1,4 +1,5 @@
 import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/admin/screens/posts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 class AdminScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _AdminScreenState extends State<AdminScreen> {
   double bottomBarBorderWidth = 5;
 
   List<Widget> pages = [
-    const Center(child: Text('Posts Screen')),
+    const PostsScreen(),
     const Center(child: Text('Analytics Screen')),
     const Center(child: Text('Cart Screen')),
     // const CartScreen(),
