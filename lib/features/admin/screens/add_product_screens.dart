@@ -4,6 +4,7 @@ import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/common/widgets/custom_textfield.dart';
 import 'package:amazon_clone/constant/global_variable.dart';
 import 'package:amazon_clone/constant/utils.dart';
+import 'package:amazon_clone/features/admin/services/admin_services.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
+  AdminServices adminServices = AdminServices();
   String category = 'Mobiles';
   List<File> productImages = [];
+  final _addProduct = GlobalKey<FormState>();
   @override
   void dispose() {
     super.dispose();
@@ -49,6 +52,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
     });
   }
 
+  void sellProduct() {
+    if (_addProduct.currentState!.validate() && productImages.isNotEmpty) {
+      adminServices.sellProduct(
+        context: context,
+        name: productNameController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        quantity: double.parse(quantityController.text),
+        category: category,
+        images: productImages,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,12 +89,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _addProduct,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
                 const SizedBox(height: 20),
-                productImages.isEmpty
+                productImages.isNotEmpty
                     ? CarouselSlider(
                         items: productImages.map(
                           (image) {
@@ -178,7 +196,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(height: 20),
                 CustomButton(
                   text: 'Sell',
-                  onPressed: () {},
+                  onPressed: sellProduct,
                 ),
               ],
             ),

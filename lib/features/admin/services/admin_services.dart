@@ -11,15 +11,18 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class AdminServices {
-  void sellProduct(
-      {required BuildContext context,
-      required String name,
-      required String description,
-      required double price,
-      required double quantity,
-      required String category,
-      required List<File> images}) async {
+  void sellProduct({
+    required BuildContext context,
+    required String name,
+    required String description,
+    required double price,
+    required double quantity,
+    required String category,
+    required List<File> images,
+  }) async {
     try {
+      final userProvider =
+          Provider.of<UserProvider>(context, listen: false).user;
       final cloudinary =
           CloudinaryPublic(dotenv.get('cloudName'), dotenv.get('uploadPreset'));
       List<String> imageUrls = [];
@@ -30,19 +33,20 @@ class AdminServices {
         imageUrls.add(res.secureUrl);
       }
       Product product = Product(
-          name: name,
-          description: description,
-          price: price,
-          quantity: quantity,
-          category: category,
-          images: imageUrls,
-          // ignore: use_build_context_synchronously
-          userId: Provider.of<UserProvider>(context).user.id);
+        name: name,
+        description: description,
+        price: price,
+        quantity: quantity,
+        category: category,
+        images: imageUrls,
+        // ignore: use_build_context_synchronously
+        // userId: Provider.of<UserProvider>(context).user.id
+      );
       http.Response res = await http.post(Uri.parse('$uri/admin/add-product'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             // ignore: use_build_context_synchronously
-            'x-auth-token': Provider.of<UserProvider>(context).user.token
+            'x-auth-token': userProvider.token
           },
           body: product.toJson());
       httpErrorHandel(
@@ -55,7 +59,7 @@ class AdminServices {
           });
     } catch (e) {
       // ignore: use_build_context_synchronously
-      showSnackBar(context, e.toString());
+      showSnackBar(context, e.toString(), error: true);
     }
   }
 }

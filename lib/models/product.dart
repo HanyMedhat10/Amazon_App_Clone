@@ -11,7 +11,7 @@ class Product {
   final String category;
   final List<String> images;
   final String? id;
-  final String? userId;
+  // final String? userId;
   Product({
     required this.name,
     required this.description,
@@ -20,7 +20,7 @@ class Product {
     required this.category,
     required this.images,
     this.id,
-    this.userId,
+    // this.userId,
   });
 
   Product copyWith({
@@ -41,7 +41,7 @@ class Product {
       category: category ?? this.category,
       images: images ?? this.images,
       id: id ?? this.id,
-      userId: userId ?? this.userId,
+      // userId: userId ?? this.userId,
     );
   }
 
@@ -54,7 +54,7 @@ class Product {
       'category': category,
       'images': images,
       'id': id,
-      'userId': userId,
+      // 'userId': userId,
     };
   }
 
@@ -69,7 +69,7 @@ class Product {
         (map['images']),
       ),
       id: map['_id'],
-      userId: map['userId'],
+      // userId: map['userId'],
     );
   }
 
@@ -80,7 +80,8 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(name: $name, description: $description, price: $price, quantity: $quantity, category: $category, images: $images, id: $id, userId: $userId)';
+    // return 'Product(name: $name, description: $description, price: $price, quantity: $quantity, category: $category, images: $images, id: $id, userId: $userId)';
+    return 'Product(name: $name, description: $description, price: $price, quantity: $quantity, category: $category, images: $images, id: $id)';
   }
 
   @override
@@ -93,8 +94,9 @@ class Product {
         other.quantity == quantity &&
         other.category == category &&
         listEquals(other.images, images) &&
-        other.id == id &&
-        other.userId == userId;
+        // other.id == id &&
+        other.id == id;
+    // other.userId == userId;
   }
 
   @override
@@ -105,7 +107,8 @@ class Product {
         quantity.hashCode ^
         category.hashCode ^
         images.hashCode ^
-        id.hashCode ^
-        userId.hashCode;
+        // id.hashCode ^
+        id.hashCode;
+    // userId.hashCode;
   }
 }
