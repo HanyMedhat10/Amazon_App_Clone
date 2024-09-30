@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 class Product {
   final String name;
   final String description;
-  final double price;
-  final double quantity;
+  final num price;/* int or double */
+  final num quantity;
   final String category;
   final List<String> images;
   final String? id;

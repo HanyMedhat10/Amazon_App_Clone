@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:amazon_clone/constant/error_handling.dart';
 import 'package:amazon_clone/constant/global_variable.dart';
@@ -15,8 +16,8 @@ class AdminServices {
     required BuildContext context,
     required String name,
     required String description,
-    required double price,
-    required double quantity,
+    required num price,
+    required num quantity,
     required String category,
     required List<File> images,
   }) async {
@@ -61,5 +62,38 @@ class AdminServices {
       // ignore: use_build_context_synchronously
       showSnackBar(context, e.toString(), error: true);
     }
+  }
+
+  // get all the products
+  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+    List<Product> productList = [];
+    try {
+      final userProvider =
+          Provider.of<UserProvider>(context, listen: false).user;
+      http.Response res = await http
+          .get(Uri.parse('$uri/admin/get-products'), headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        // ignore: use_build_context_synchronously
+        'x-auth-token': userProvider.token
+      });
+      httpErrorHandel(
+          response: res,
+          // ignore: use_build_context_synchronously
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              productList.add(
+                Product.fromJson(
+                  jsonEncode(jsonDecode(res.body)[i]),
+                ),
+              );
+            }
+          });
+    } catch (e) {
+      debugPrint(e.toString());
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, e.toString(), error: true);
+    }
+    return productList;
   }
 }
