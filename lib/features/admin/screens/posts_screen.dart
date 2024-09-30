@@ -24,9 +24,20 @@ class _PostsScreenState extends State<PostsScreen> {
     fetchAllProducts();
   }
 
-   fetchAllProducts() async {
+  fetchAllProducts() async {
     products = await adminServices.fetchAllProducts(context);
     setState(() {});
+  }
+
+  deleteProduct(String id, int index) {
+    adminServices.deleteProduct(
+      context: context,
+      id: id,
+      onSuccess: () async {
+        products.removeAt(index);
+        setState(() {});
+      },
+    );
   }
 
   @override
@@ -61,7 +72,10 @@ class _PostsScreenState extends State<PostsScreen> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => deleteProduct(
+                            productData.id!,
+                            index,
+                          ),
                           icon: const Icon(
                             Icons.delete_outline,
                           ),

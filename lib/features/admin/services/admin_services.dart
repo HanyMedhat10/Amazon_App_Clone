@@ -96,4 +96,33 @@ class AdminServices {
     }
     return productList;
   }
+
+  // delete product
+  void deleteProduct({
+    required BuildContext context,
+    required String id,
+    required VoidCallback onSuccess,
+  }) async {
+    try {
+      final userProvider =
+          Provider.of<UserProvider>(context, listen: false).user;
+      http.Response res = await http.delete(
+          Uri.parse('$uri/admin/delete-product/$id'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            // ignore: use_build_context_synchronously
+            'x-auth-token': userProvider.token
+          });
+      httpErrorHandel(
+        response: res,
+        // ignore: use_build_context_synchronously
+        context: context,
+        onSuccess: onSuccess,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, e.toString(), error: true);
+    }
+  }
 }
