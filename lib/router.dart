@@ -1,6 +1,7 @@
 import 'package:amazon_clone/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone/features/admin/screens/add_product_screens.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
+import 'package:amazon_clone/features/home/screens/category_deals_screen.dart';
 import 'package:flutter/material.dart';
 
 MaterialPageRoute generateRouter(RouteSettings settings) {
@@ -10,15 +11,21 @@ MaterialPageRoute generateRouter(RouteSettings settings) {
         settings: settings,
         builder: (_) => const AuthScreen(),
       );
-      case BottomBar.routeName:
+    case BottomBar.routeName:
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const BottomBar(),
       );
-      case AddProductScreen.routeName:
+    case AddProductScreen.routeName:
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const AddProductScreen(),
+      );
+    case CategoryDealsScreen.routeName:
+      final category = settings.arguments as String;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => CategoryDealsScreen(category: category),
       );
     default:
       return MaterialPageRoute(
