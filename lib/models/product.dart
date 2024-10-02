@@ -1,16 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:amazon_clone/models/ratings.dart';
 import 'package:flutter/foundation.dart';
 
 class Product {
   final String name;
   final String description;
-  final num price;/* int or double */
+  final num price; /* int or double */
   final num quantity;
   final String category;
   final List<String> images;
   final String? id;
+  final num? rating;
+  final num? numReviews;
+  final List<Ratings>? ratings;
   // final String? userId;
   Product({
     required this.name,
@@ -19,7 +23,10 @@ class Product {
     required this.quantity,
     required this.category,
     required this.images,
+    this.ratings,
     this.id,
+    this.rating,
+    this.numReviews,
     // this.userId,
   });
 
@@ -31,7 +38,9 @@ class Product {
     String? category,
     List<String>? images,
     String? id,
-    String? userId,
+    num? rating,
+    num? numReviews,
+    final List<Ratings>? ratings,
   }) {
     return Product(
       name: name ?? this.name,
@@ -41,6 +50,9 @@ class Product {
       category: category ?? this.category,
       images: images ?? this.images,
       id: id ?? this.id,
+      rating: rating ?? this.rating,
+      numReviews: numReviews ?? this.numReviews,
+      ratings: ratings ?? this.ratings,
       // userId: userId ?? this.userId,
     );
   }
@@ -54,6 +66,9 @@ class Product {
       'category': category,
       'images': images,
       'id': id,
+      'rating': rating,
+      'numReviews': numReviews,
+      'ratings': ratings,
       // 'userId': userId,
     };
   }
@@ -69,7 +84,9 @@ class Product {
         (map['images']),
       ),
       id: map['_id'],
-      // userId: map['userId'],
+      rating: map['rating'],
+      numReviews: map['numReviews'],
+      ratings: map['ratings'] == null ? null : List<Ratings>.from(map['ratings']?.map((x) => Ratings.fromMap(x as Map<String, dynamic>))),
     );
   }
 
@@ -95,7 +112,10 @@ class Product {
         other.category == category &&
         listEquals(other.images, images) &&
         // other.id == id &&
-        other.id == id;
+        other.id == id &&
+        other.rating == rating &&
+        other.numReviews == numReviews &&
+        listEquals(other.ratings, ratings);
     // other.userId == userId;
   }
 
@@ -108,7 +128,10 @@ class Product {
         category.hashCode ^
         images.hashCode ^
         // id.hashCode ^
-        id.hashCode;
+        id.hashCode ^
+        rating.hashCode ^
+        numReviews.hashCode ^
+        ratings.hashCode;
     // userId.hashCode;
   }
 }
