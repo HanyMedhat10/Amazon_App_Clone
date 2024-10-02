@@ -3,6 +3,8 @@ import 'package:amazon_clone/features/home/services/home_services.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:flutter/material.dart';
 
+import '../../product_details/screens/product_detail_screen.dart';
+
 class CategoryDealsScreen extends StatefulWidget {
   final String category;
   static const routeName = '/category-deals';
@@ -82,50 +84,59 @@ class _CategoryDealsScreenState extends State<CategoryDealsScreen> {
                     ),
                     itemBuilder: (context, index) {
                       final product = products![index];
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 130,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black12,
-                                  width: 0.5,
+                      return GestureDetector(
+                        onTap: () {
+                          // navigate to product details
+                          Navigator.of(context).pushNamed(
+                            ProductDetailScreen.routeName,
+                            arguments: product,
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 130,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black12,
+                                    width: 0.5,
+                                  ),
                                 ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.network(
-                                  product.images[0],
-                                  fit: BoxFit.cover,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.network(
+                                    product.images[0],
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.only(
-                                left: 0, top: 5, right: 15),
-                            child: Text(
-                              product.name,
-                              style: const TextStyle(fontSize: 17),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            Container(
+                              alignment: Alignment.topLeft,
+                              padding: const EdgeInsets.only(
+                                  left: 0, top: 5, right: 15),
+                              child: Text(
+                                product.name,
+                                style: const TextStyle(fontSize: 17),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          // Container(
-                          //   alignment: Alignment.topLeft,
-                          //   padding: const EdgeInsets.only(
-                          //       left: 0, top: 0, right: 15),
-                          //   child: Text(
-                          //     product.price.toString(),
-                          //     style: const TextStyle(
-                          //         fontSize: 8, color: Colors.grey),
-                          //     maxLines: 1,
-                          //     overflow: TextOverflow.ellipsis,
-                          //   ),
-                          // ),
-                        ],
+                            // Container(
+                            //   alignment: Alignment.topLeft,
+                            //   padding: const EdgeInsets.only(
+                            //       left: 0, top: 0, right: 15),
+                            //   child: Text(
+                            //     product.price.toString(),
+                            //     style: const TextStyle(
+                            //         fontSize: 8, color: Colors.grey),
+                            //     maxLines: 1,
+                            //     overflow: TextOverflow.ellipsis,
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       );
                     },
                   ),

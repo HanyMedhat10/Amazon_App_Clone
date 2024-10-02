@@ -2,9 +2,9 @@ import 'package:amazon_clone/constant/global_variable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class Starts extends StatelessWidget {
+class Stars extends StatelessWidget {
   final double rating;
-  const Starts({super.key, required this.rating});
+  const Stars({super.key, required this.rating});
 
   @override
   Widget build(BuildContext context) {

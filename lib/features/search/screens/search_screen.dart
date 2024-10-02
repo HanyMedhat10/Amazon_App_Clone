@@ -1,5 +1,6 @@
 import 'package:amazon_clone/constant/global_variable.dart';
 import 'package:amazon_clone/features/home/widgets/address_box.dart';
+import 'package:amazon_clone/features/product_details/screens/product_detail_screen.dart';
 import 'package:amazon_clone/features/search/services/search_service.dart';
 import 'package:amazon_clone/features/search/widget/search_product.dart';
 import 'package:amazon_clone/models/product.dart';
@@ -21,6 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
     fetchSearchProducts(context: context, searchQuery: widget.searchQuery);
   }
+
   void navigateToSearchScreen(String query) {
     Navigator.pop(context, query);
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
@@ -122,7 +124,13 @@ class _SearchScreenState extends State<SearchScreen> {
                     itemCount: products!.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            ProductDetailScreen.routeName,
+                            arguments: products![index],
+                          );
+                        },
                         child: SearchProduct(
                           product: products![index],
                         ),
