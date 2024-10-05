@@ -9,6 +9,7 @@ class User {
   final String type;
   final String token;
   final String address;
+  final List<Map<String, dynamic>> cart;
   User({
     required this.id,
     required this.name,
@@ -17,6 +18,7 @@ class User {
     required this.type,
     required this.token,
     required this.address,
+    required this.cart,
   });
 
   User copyWith({
@@ -27,6 +29,7 @@ class User {
     String? type,
     String? token,
     String? address,
+    List<Map<String, dynamic>>? cart,
   }) {
     return User(
       id: id ?? this.id,
@@ -36,6 +39,7 @@ class User {
       type: type ?? this.type,
       token: token ?? this.token,
       address: address ?? this.address,
+      cart: cart ?? this.cart,
     );
   }
 
@@ -47,6 +51,7 @@ class User {
       'password': password,
       'type': type,
       'token': token,
+      'cart': cart,
     };
   }
 
@@ -59,6 +64,8 @@ class User {
       type: map['type'] as String,
       token: map['token'] as String,
       address: map['address'] as String,
+      cart: List<Map<String, dynamic>>.from(
+          map['cart']?.map((x) => Map<String, dynamic>.from(x)) ?? []),
     );
   }
 
@@ -81,7 +88,8 @@ class User {
         other.email == email &&
         other.password == password &&
         other.type == type &&
-        other.token == token;
+        other.token == token &&
+        other.cart == cart;
   }
 
   @override
@@ -91,6 +99,7 @@ class User {
         email.hashCode ^
         password.hashCode ^
         type.hashCode ^
-        token.hashCode;
+        token.hashCode^
+        cart.hashCode;
   }
 }
