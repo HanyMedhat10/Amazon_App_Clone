@@ -42,4 +42,36 @@ class HomeServices {
     }
     return productList;
   }
+
+  Future<Product> fetchDealOfDay({required BuildContext context}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false).user;
+    Product product = Product(
+      name: '',
+      description: '',
+      quantity: 0,
+      images: [],
+      category: '',
+      price: 0,
+    );
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/product/deal-of-day'), headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        // ignore: use_build_context_synchronously
+        'x-auth-token': userProvider.token
+      });
+      httpErrorHandel(
+          response: res,
+          // ignore: use_build_context_synchronously
+          context: context,
+          onSuccess: () {
+            product = Product.fromJson(res.body);
+          });
+    } catch (e) {
+      debugPrint(e.toString());
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, e.toString(), error: true);
+    }
+    return product;
+  }
 }
