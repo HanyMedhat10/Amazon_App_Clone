@@ -1,6 +1,7 @@
 import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/common/widgets/stars.dart';
 import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/cart/services/cart_services.dart';
 import 'package:amazon_clone/features/product_details/services/product_details_services.dart';
 import 'package:amazon_clone/features/search/screens/search_screen.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
@@ -21,6 +22,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  CartServices cartServices = CartServices();
   ProductDetailsServices productDetailsServices = ProductDetailsServices();
   double myRating = 0;
   void navigateToSearchScreen(String query) {
@@ -42,7 +44,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   void addToCart({int quantity = 1}) {
-    productDetailsServices.addToCart(
+    cartServices.addToCart(
       context: context,
       product: widget.product,
       quantity: quantity,

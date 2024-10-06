@@ -1,5 +1,5 @@
+import 'package:amazon_clone/features/cart/services/cart_services.dart';
 import 'package:amazon_clone/features/product_details/screens/product_detail_screen.dart';
-import 'package:amazon_clone/features/product_details/services/product_details_services.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +7,6 @@ import 'package:provider/provider.dart';
 
 class CartProduct extends StatefulWidget {
   final int index;
-  // final String id;
-  // final String name;
-  // final String image;
-  // final String productId;
-  // final int quantity;
-  // final double price;
-  // final String category;
-  // final List<dynamic> images;
-  // final dynamic product;
   const CartProduct({super.key, required this.index});
 
   @override
@@ -23,15 +14,15 @@ class CartProduct extends StatefulWidget {
 }
 
 class _CartProductState extends State<CartProduct> {
-  final ProductDetailsServices productDetailsServices =
-      ProductDetailsServices();
-      void increaseQuantity(Product product){
-        productDetailsServices.addToCart(
-          context: context,
-          product: product,
-          quantity: 1
-        );
-      }
+  final CartServices cartServices = CartServices();
+  void increaseQuantity(Product product) {
+    cartServices.addToCart(context: context, product: product, quantity: 1);
+  }
+
+  void decreaseQuantity(Product product) {
+    cartServices.removeFromCart(context: context, product: product);
+  }
+
   @override
   Widget build(BuildContext context) {
     final productCart = context.watch<UserProvider>().user.cart[widget.index];
@@ -119,20 +110,20 @@ class _CartProductState extends State<CartProduct> {
           child: Row(
             // mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                width: 35,
-                height: 32,
-                decoration: BoxDecoration(
-                  border: Border.all(
+              InkWell(
+                onTap: () => decreaseQuantity(product),
+                child: Container(
+                  width: 35,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.5,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
                     color: Colors.black12,
-                    width: 1.5,
                   ),
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.black12,
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
+                  child: const Icon(
                     Icons.remove,
                     size: 18,
                   ),
@@ -168,12 +159,9 @@ class _CartProductState extends State<CartProduct> {
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.black12,
                   ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.add,
-                      size: 18,
-                    ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 18,
                   ),
                 ),
               ),
