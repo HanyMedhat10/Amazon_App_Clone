@@ -9,7 +9,7 @@ class User {
   final String type;
   final String token;
   final String address;
-  final List<dynamic>? cart;
+  final List<dynamic> cart;
   User({
     required this.id,
     required this.name,

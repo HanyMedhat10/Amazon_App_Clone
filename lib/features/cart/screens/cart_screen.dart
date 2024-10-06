@@ -1,5 +1,6 @@
 import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/cart/widgets/cart_product.dart';
 import 'package:amazon_clone/features/cart/widgets/cart_subtotal.dart';
 import 'package:amazon_clone/features/home/widgets/address_box.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
@@ -107,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
-              text: 'Proceed to Buy (${user.cart!.length} items)',
+              text: 'Proceed to Buy (${user.cart.length} items)',
               onPressed: () {},
               backgroundColor: Colors.yellow.shade600,
             ),
@@ -125,9 +126,11 @@ class _CartScreenState extends State<CartScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: user.cart!.length,
+              itemCount: user.cart.length,
               itemBuilder: (context, index) {
-                return Container();
+                return CartProduct(
+                  index: index,
+                );
               },
             ),
           ),
