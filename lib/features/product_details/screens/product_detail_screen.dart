@@ -31,13 +31,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   void initState() {
     super.initState();
-    final String userId = Provider.of<UserProvider>(context,listen: false ).user.id.toString();
+    final String userId =
+        Provider.of<UserProvider>(context, listen: false).user.id.toString();
     for (var i = 0; i < widget.product.images.length; i++) {
       if (widget.product.ratings![i].userId == userId) {
         myRating = widget.product.ratings![i].rating.toDouble();
         break;
       }
     }
+  }
+
+  void addToCart({int quantity = 1}) {
+    productDetailsServices.addToCart(
+      context: context,
+      product: widget.product,
+      quantity: quantity,
+    );
   }
 
   @override
@@ -224,7 +233,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(10),
               child: CustomButton(
                 text: 'Add to Cart',
-                onPressed: () {},
+                onPressed: addToCart,
                 backgroundColor: const Color.fromRGBO(254, 216, 19, 1),
               ),
             ),

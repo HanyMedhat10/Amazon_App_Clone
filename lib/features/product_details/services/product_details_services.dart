@@ -47,8 +47,7 @@ class ProductDetailsServices {
     int quantity = 1,
   }) async {
     try {
-      final userProvider =
-          Provider.of<UserProvider>(context, listen: false);
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res = await http.post(
         Uri.parse('$uri/user/add-to-cart'),
         headers: <String, String>{
@@ -65,8 +64,9 @@ class ProductDetailsServices {
           // ignore: use_build_context_synchronously
           context: context,
           onSuccess: () {
-          User user =  userProvider.user.copyWith(cart: jsonDecode(res.body)['cart']);
-          userProvider.setUserFromModel(user);
+            User user =
+                userProvider.user.copyWith(cart: jsonDecode(res.body)['cart']);
+            userProvider.setUserFromModel(user);
           });
     } catch (e) {
       // ignore: use_build_context_synchronously

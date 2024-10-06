@@ -9,7 +9,7 @@ class User {
   final String type;
   final String token;
   final String address;
-  final List<Map<String, dynamic>> cart;
+  final List<dynamic>? cart;
   User({
     required this.id,
     required this.name,
@@ -29,7 +29,7 @@ class User {
     String? type,
     String? token,
     String? address,
-    List<Map<String, dynamic>>? cart,
+    List<dynamic>? cart,
   }) {
     return User(
       id: id ?? this.id,
@@ -99,7 +99,7 @@ class User {
         email.hashCode ^
         password.hashCode ^
         type.hashCode ^
-        token.hashCode^
+        token.hashCode ^
         cart.hashCode;
   }
 }
