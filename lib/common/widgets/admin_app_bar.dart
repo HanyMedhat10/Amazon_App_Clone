@@ -2,7 +2,7 @@ import 'package:amazon_clone/constant/global_variable.dart';
 import 'package:flutter/material.dart';
 
 // ignore: non_constant_identifier_names
-PreferredSizeWidget CustomAppBar(BuildContext context) => PreferredSize(
+PreferredSizeWidget AdminAppBar(BuildContext context) => PreferredSize(
       preferredSize: const Size.fromHeight(50),
       child: AppBar(
         flexibleSpace: Container(
