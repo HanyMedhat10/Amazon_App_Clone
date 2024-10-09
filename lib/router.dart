@@ -47,9 +47,10 @@ MaterialPageRoute generateRouter(RouteSettings settings) {
         builder: (_) => CategoryDealsScreen(category: category),
       );
     case AddressScreen.routeName:
+        final totalAmount = settings.arguments as String;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const AddressScreen(),
+        builder: (_) => AddressScreen(totalAmount: totalAmount,),
       );
     default:
       return MaterialPageRoute(

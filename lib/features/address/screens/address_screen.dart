@@ -1,12 +1,16 @@
 import 'package:amazon_clone/common/widgets/custom_app_bar_search.dart';
-import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/common/widgets/custom_textfield.dart';
+import 'package:amazon_clone/constant/utils.dart';
+import 'package:amazon_clone/features/address/services/address_services.dart';
+import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
+import 'package:provider/provider.dart';
 
 class AddressScreen extends StatefulWidget {
   static const String routeName = '/address';
-  const AddressScreen({super.key});
+  final String totalAmount;
+  const AddressScreen({super.key, required this.totalAmount});
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -23,7 +27,20 @@ class _AddressScreenState extends State<AddressScreen> {
       PaymentConfiguration.fromAsset('gpay.json');
   final Future<PaymentConfiguration> _applePayConfigFuture =
       PaymentConfiguration.fromAsset('applepay.json');
-  // final Future<String> _googlePay = File('assets/gpay.json').readAsString();
+  final AddressServices addressServices = AddressServices();
+  String addressToBeUsed = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _paymentItems.add(
+      PaymentItem(
+        label: 'Total Amount',
+        amount: widget.totalAmount,
+        status: PaymentItemStatus.final_price,
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -36,16 +53,71 @@ class _AddressScreenState extends State<AddressScreen> {
 
   void onApplePayResult(res) {
     debugPrint('res: $res');
+    if (Provider.of<UserProvider>(context, listen: false)
+        .user
+        .address
+        .isEmpty) {
+      addressServices.saveUserAddress(
+        context: context,
+        address: addressToBeUsed,
+      );
+      addressServices.placeOrder(
+          context: context,
+          address: addressToBeUsed,
+          totalSum: double.parse(widget.totalAmount));
+    }
   }
 
   void onGooglePayResult(res) {
     debugPrint('res: $res');
+    if (Provider.of<UserProvider>(context, listen: false)
+        .user
+        .address
+        .isEmpty) {
+      addressServices.saveUserAddress(
+        context: context,
+        address: addressToBeUsed,
+      );
+      addressServices.placeOrder(
+          context: context,
+          address: addressToBeUsed,
+          totalSum: double.parse(widget.totalAmount));
+    }
+  }
+
+  void payPressed(String addressFromProvider) {
+    debugPrint('addressFromProvider: $addressFromProvider');
+    addressToBeUsed = "";
+    bool isForm = _flatBuildingController.text.isNotEmpty ||
+        _areaController.text.isNotEmpty ||
+        _pinCodeController.text.isNotEmpty ||
+        _cityController.text.isNotEmpty;
+
+    if (isForm) {
+      if (_addressFormKey.currentState!.validate()) {
+        addressToBeUsed = '${_flatBuildingController.text}, '
+            '${_areaController.text}, '
+            '${_cityController.text}, -'
+            '${_pinCodeController.text}';
+      } else {
+        throw Exception('Please enter all the values!');
+      }
+    } else if (addressFromProvider.isNotEmpty) {
+      addressToBeUsed = addressFromProvider;
+    } else {
+      showSnackBar(context, 'ERROR', error: true);
+    }
+    debugPrint('addressToBeUsed: $addressToBeUsed');
+    // Navigator.pushNamed(context, '/checkout', arguments: {
+    //   'totalAmount': widget.totalAmount,
+    //   'address': addressToBeUsed
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    // var address = context.watch<UserProvider>().user.address ??
-    String address = '101 fake Street 12th St, New York, NY 10110';
+    var address = context.watch<UserProvider>().user.address;
+    // String address = '101 fake Street 12th St, New York, NY 10110';
     return Scaffold(
       appBar: CustomAppBarSearch(context),
       body: SingleChildScrollView(
@@ -111,19 +183,18 @@ class _AddressScreenState extends State<AddressScreen> {
                       controller: _cityController,
                       hintText: 'Town/City/District',
                     ),
-                    const SizedBox(height: 10),
-                    CustomButton(text: 'Sign Up', onPressed: () {}),
                   ],
                 ),
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             FutureBuilder<PaymentConfiguration>(
               future: _applePayConfigFuture,
               builder: (context, snapshot) => snapshot.hasData
                   ? ApplePayButton(
+                      onPressed: () => payPressed(address),
                       width: double.infinity,
                       paymentConfiguration: snapshot.data!,
                       paymentItems: _paymentItems,
@@ -131,7 +202,7 @@ class _AddressScreenState extends State<AddressScreen> {
                       margin: const EdgeInsets.only(top: 15.0),
                       onPaymentResult: onApplePayResult,
                       loadingIndicator: const Center(
-                        child: CircularProgressIndicator(),
+                        child: Center(child: CircularProgressIndicator()),
                       ),
                     )
                   : const SizedBox.shrink(),
@@ -140,6 +211,7 @@ class _AddressScreenState extends State<AddressScreen> {
                 future: _googlePayConfigFuture,
                 builder: (context, snapshot) => snapshot.hasData
                     ? GooglePayButton(
+                        onPressed: () => payPressed(address),
                         width: double.infinity,
                         paymentConfiguration: snapshot.data!,
                         paymentItems: _paymentItems,
@@ -147,7 +219,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         margin: const EdgeInsets.only(top: 15.0),
                         onPaymentResult: onGooglePayResult,
                         loadingIndicator: const Center(
-                          child: CircularProgressIndicator(),
+                          child: Center(child: CircularProgressIndicator()),
                         ),
                       )
                     : const SizedBox.shrink()),
