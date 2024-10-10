@@ -1,5 +1,7 @@
 import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/account/services/account_services.dart';
 import 'package:amazon_clone/features/account/widgets/single_product.dart';
+import 'package:amazon_clone/models/order.dart';
 import 'package:flutter/material.dart';
 
 class Orders extends StatefulWidget {
@@ -11,36 +13,19 @@ class Orders extends StatefulWidget {
 
 class _OrdersState extends State<Orders> {
   // temporary list orders
-  List orders = [
-    {
-      'id': '1',
-      'title': 'black hat',
-      'image': 'https://i.ibb.co/cvpntL1/hats.png',
-      'price': '\$100',
-      'status': 'Completed',
-    },
-    {
-      'id': '1',
-      'title': 'black hat',
-      'image': 'https://i.ibb.co/cvpntL1/hats.png',
-      'price': '\$100',
-      'status': 'Completed',
-    },
-    {
-      'id': '1',
-      'title': 'black hat',
-      'image': 'https://i.ibb.co/cvpntL1/hats.png',
-      'price': '\$100',
-      'status': 'Completed',
-    },
-    {
-      'id': '1',
-      'title': 'black hat',
-      'image': 'https://i.ibb.co/cvpntL1/hats.png',
-      'price': '\$100',
-      'status': 'Completed',
-    },
-  ];
+  List<Order>? orders;
+  AccountServices accountServices = AccountServices();
+  @override
+  void initState() {
+    super.initState();
+    fetchMyOrders();
+  }
+
+  void fetchMyOrders() async {
+    orders = await accountServices.fetchMyOrders(context: context);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,12 +67,12 @@ class _OrdersState extends State<Orders> {
           ),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: orders.length,
+            // shrinkWrap: true,
+            itemCount: orders!.length,
             itemBuilder: (context, index) {
               // return Container();
               return SingleProduct(
-                image: orders[index]['image'],
+                image: orders![index].products[0].images[0],
               );
             },
           ),

@@ -37,6 +37,7 @@ class _AddressScreenState extends State<AddressScreen> {
       PaymentItem(
         label: 'Total Amount',
         amount: widget.totalAmount,
+        // amount: 0.0.toString(),
         status: PaymentItemStatus.final_price,
       ),
     );
