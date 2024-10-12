@@ -20,6 +20,7 @@ class AccountServices {
         // ignore: use_build_context_synchronously
         'x-auth-token': userProvider.token
       });
+      debugPrint('res: ${jsonDecode(res.body)[0]['products']}');
       httpErrorHandel(
           response: res,
           // ignore: use_build_context_synchronously

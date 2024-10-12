@@ -113,6 +113,15 @@ class _AddressScreenState extends State<AddressScreen> {
     //   'totalAmount': widget.totalAmount,
     //   'address': addressToBeUsed
     // });
+    //  !!! for test only
+    addressServices.saveUserAddress(
+      context: context,
+      address: addressToBeUsed,
+    );
+    addressServices.placeOrder(
+        context: context,
+        address: addressToBeUsed,
+        totalSum: double.parse(widget.totalAmount));
   }
 
   @override

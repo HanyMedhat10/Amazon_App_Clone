@@ -32,7 +32,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final String userId =
         Provider.of<UserProvider>(context, listen: false).user.id.toString();
     for (var i = 0; i < widget.product.images.length; i++) {
-      if (widget.product.ratings![i].userId == userId) {
+      if (widget.product.rating == 0) {
+        continue;
+      }
+      if (widget.product.ratings?[i].userId == userId) {
         myRating = widget.product.ratings![i].rating.toDouble();
         break;
       }

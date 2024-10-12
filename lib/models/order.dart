@@ -8,10 +8,11 @@ class Order {
   final String id;
   final String userId;
   final List<Product> products;
-  final List<int> quantity;
+  final List<num> quantity;
   final String address;
   final int status;
-  final String orderedAt;
+  final int orderedAt;
+  final num totalPrice;
   Order({
     required this.id,
     required this.userId,
@@ -20,6 +21,7 @@ class Order {
     required this.address,
     required this.status,
     required this.orderedAt,
+    required this.totalPrice,
   });
 
   Order copyWith({
@@ -29,7 +31,8 @@ class Order {
     List<int>? quantity,
     String? address,
     int? status,
-    String? orderedAt,
+    int? orderedAt,
+    double? totalPrice,
   }) {
     return Order(
       id: id ?? this.id,
@@ -39,36 +42,38 @@ class Order {
       address: address ?? this.address,
       status: status ?? this.status,
       orderedAt: orderedAt ?? this.orderedAt,
+      totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'userId': userId,
       'products': products.map((x) => x.toMap()).toList(),
       'quantity': quantity,
       'address': address,
       'status': status,
       'orderedAt': orderedAt,
+      'totalPrice': totalPrice,
     };
   }
 
   factory Order.fromMap(Map<String, dynamic> map) {
     return Order(
-      id: map['id'] as String,
+      id: map['_id'] as String,
       userId: map['userId'] as String,
       products: List<Product>.from(
-        (map['products'] as List<int>).map<Product>(
-          (x) => Product.fromMap(x as Map<String, dynamic>),
+          map['products']?.map((x) => Product.fromMap(x['product']))),
+      quantity:  List<num>.from(
+        map['products']?.map(
+          (x) => x['quantity'],
         ),
-      ),
-      quantity: List<int>.from(
-        (map['quantity'] as List<int>),
       ),
       address: map['address'] as String,
       status: map['status'] as int,
-      orderedAt: map['orderedAt'] as String,
+      orderedAt: map['orderedAt'] as int,
+      totalPrice: map['totalPrice'] as num,
     );
   }
 
@@ -79,7 +84,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, userId: $userId, products: $products, quantity: $quantity, address: $address, status: $status, orderedAt: $orderedAt)';
+    return 'Order(id: $id, userId: $userId, products: $products, quantity: $quantity, address: $address, status: $status, orderedAt: $orderedAt, totalPrice: $totalPrice)';
   }
 
   @override
@@ -92,7 +97,8 @@ class Order {
         listEquals(other.quantity, quantity) &&
         other.address == address &&
         other.status == status &&
-        other.orderedAt == orderedAt;
+        other.orderedAt == orderedAt &&
+        other.totalPrice == totalPrice;
   }
 
   @override
@@ -103,6 +109,7 @@ class Order {
         quantity.hashCode ^
         address.hashCode ^
         status.hashCode ^
-        orderedAt.hashCode;
+        orderedAt.hashCode ^
+        totalPrice.hashCode;
   }
 }

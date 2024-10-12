@@ -10,9 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class CartServices{
-
-    void addToCart({
+class CartServices {
+  void addToCart({
     required BuildContext context,
     required Product product,
     int quantity = 1,
@@ -37,13 +36,15 @@ class CartServices{
           onSuccess: () {
             User user =
                 userProvider.user.copyWith(cart: jsonDecode(res.body)['cart']);
+            debugPrint('cart user: ${jsonDecode(res.body)['cart']}');
             userProvider.setUserFromModel(user);
           });
     } catch (e) {
       // ignore: use_build_context_synchronously
       showSnackBar(context, e.toString(), error: true);
     }
-  } 
+  }
+
   /* remove from cart  quantity = 1 If not, it decrements the cart quantity by 1 */
   void removeFromCart({
     required BuildContext context,
@@ -59,7 +60,7 @@ class CartServices{
           'x-auth-token': userProvider.user.token
         },
         // body: jsonEncode(
-          // {'id': product.id},
+        // {'id': product.id},
         // ),
       );
       httpErrorHandel(
@@ -76,5 +77,4 @@ class CartServices{
       showSnackBar(context, e.toString(), error: true);
     }
   }
-  
 }
