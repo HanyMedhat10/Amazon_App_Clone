@@ -1,9 +1,13 @@
 import 'package:amazon_clone/common/widgets/custom_app_bar_search.dart';
+import 'package:amazon_clone/common/widgets/custom_button.dart';
+import 'package:amazon_clone/features/admin/services/admin_services.dart';
 import 'package:amazon_clone/features/order_details/widgets/signal_order.dart';
 import 'package:amazon_clone/models/order.dart';
+import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   static const routerName = '/order-details';
@@ -15,6 +19,7 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  final AdminServices adminServices = AdminServices();
   int currentStep = 0;
   @override
   void initState() {
@@ -22,8 +27,23 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     currentStep = widget.order.status;
   }
 
+// !!! Update Order Status  Only for Admin !!!
+  void updateOrderStatus(int status) {
+    adminServices.updateOrderStatus(
+      context: context,
+      status: ++status,
+      order: widget.order,
+      onSuccess: () {
+        setState(() {
+          currentStep = status;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
       appBar: CustomAppBarSearch(
         context,
@@ -97,6 +117,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               child: Stepper(
                 currentStep: currentStep,
                 controlsBuilder: (context, details) {
+                  if (user.type == 'admin') {
+                    return CustomButton(text: 'Done', onPressed: () {
+                      updateOrderStatus(currentStep);
+                    });
+                  }
                   return const SizedBox();
                 },
                 steps: [
