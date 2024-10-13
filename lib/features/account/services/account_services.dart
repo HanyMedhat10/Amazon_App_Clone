@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class AccountServices {
+  /// fetch my orders from the server
   Future<List<Order>> fetchMyOrders({required BuildContext context}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false).user;
     List<Order> orderList = [];
