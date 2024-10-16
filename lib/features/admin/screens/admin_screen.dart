@@ -1,4 +1,5 @@
 import 'package:amazon_clone/constant/global_variable.dart';
+import 'package:amazon_clone/features/admin/screens/analytics_screen.dart';
 import 'package:amazon_clone/features/admin/screens/orders_screen.dart';
 import 'package:amazon_clone/features/admin/screens/posts_screen.dart';
 import 'package:badges/badges.dart' as badges;
@@ -18,7 +19,8 @@ class _AdminScreenState extends State<AdminScreen> {
 
   List<Widget> pages = [
     const PostsScreen(),
-    const Center(child: Text('Analytics Screen')),
+    // const Center(child: Text('Analytics Screen')),
+    const AnalyticsScreen(),
     const OrdersScreen()
     // const CartScreen(),
   ];

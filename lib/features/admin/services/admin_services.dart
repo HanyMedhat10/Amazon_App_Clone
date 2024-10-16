@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:amazon_clone/constant/error_handling.dart';
 import 'package:amazon_clone/constant/global_variable.dart';
 import 'package:amazon_clone/constant/utils.dart';
+import 'package:amazon_clone/features/admin/model/sales.dart';
 import 'package:amazon_clone/models/order.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
@@ -126,6 +128,7 @@ class AdminServices {
       showSnackBar(context, e.toString(), error: true);
     }
   }
+
   Future<List<Order>> fetchAllOrders({required BuildContext context}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false).user;
     List<Order> orderList = [];
@@ -156,6 +159,49 @@ class AdminServices {
     }
     return orderList;
   }
+
+  Future<Map<String, dynamic>> getEarnings(
+      {required BuildContext context}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false).user;
+    List<Sales> sales = [];
+    int totalEarnings = 0;
+    const categories = [
+      "Mobiles",
+      "Essentials",
+      "Appliances",
+      "Books",
+      "Fashion",
+    ];
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/admin/analytics'), headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        // ignore: use_build_context_synchronously
+        'x-auth-token': userProvider.token
+      });
+      httpErrorHandel(
+          response: res,
+          // ignore: use_build_context_synchronously
+          context: context,
+          onSuccess: () {
+            var response = jsonDecode(res.body);
+            totalEarnings = response['totalEarnings'];
+            for (var element in categories) {
+              sales.add(Sales(
+                label: element,
+            // because the response have not all categories
+                earning: response[element] ?? 0,
+              ));
+            }
+          });
+    } catch (e) {
+      debugPrint(e.toString());
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, e.toString(), error: true);
+    }
+    return {'sales': sales, 'totalEarnings': totalEarnings};
+  }
+
   void updateOrderStatus({
     required BuildContext context,
     required int status,
@@ -165,16 +211,16 @@ class AdminServices {
     try {
       final userProvider =
           Provider.of<UserProvider>(context, listen: false).user;
-      http.Response res = await http.patch(
-          Uri.parse('$uri/admin/update-order/${order.id}'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            // ignore: use_build_context_synchronously
-            'x-auth-token': userProvider.token
-          },
-          body: jsonEncode({
-            'status': status,
-          }));
+      http.Response res =
+          await http.patch(Uri.parse('$uri/admin/update-order/${order.id}'),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+                // ignore: use_build_context_synchronously
+                'x-auth-token': userProvider.token
+              },
+              body: jsonEncode({
+                'status': status,
+              }));
       httpErrorHandel(
         response: res,
         // ignore: use_build_context_synchronously
